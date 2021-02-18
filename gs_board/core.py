@@ -10,45 +10,41 @@ from std_msgs.msg import Bool
 class BoardManager():
 
     def __init__(self):
-        self.error_number=-255.
         rospy.wait_for_service("geoscan/alive")
-        rospy.wait_for_service("geoscan/board/time_service")
-        rospy.wait_for_service("geoscan/board/delta_time_service")
-        rospy.wait_for_service("geoscan/board/launch_time_service")
-        rospy.wait_for_service("geoscan/board/info_service")
-        self.__alive=ServiceProxy("geoscan/alive",Live)
-        self.__tm_service=ServiceProxy("geoscan/board/time_service",Time)
-        self.__dltm_service=ServiceProxy("geoscan/board/delta_time_service",Time)
-        self.__lntm_service=ServiceProxy("geoscan/board/launch_time_service",Time)
-        self.__info_service=ServiceProxy("geoscan/board/info_service",Info)
+        rospy.wait_for_service("geoscan/board/get_time")
+        rospy.wait_for_service("geoscan/board/get_uptime")
+        rospy.wait_for_service("geoscan/board/get_flight_time")
+        rospy.wait_for_service("geoscan/board/get_info")
+
+        self.__alive = ServiceProxy("geoscan/alive",Live)
+        self.__time_service = ServiceProxy("geoscan/board/get_time",Time)
+        self.__uptime_service = ServiceProxy("geoscan/board/get_uptime",Time)
+        self.__flight_time_service = ServiceProxy("geoscan/board/get_flight_time",Time)
+        self.__info_service = ServiceProxy("geoscan/board/get_info",Info)
     
     def runStatus(self):
         return self.__alive().status
 
     def boardNumber(self):
-        if(self.runStatus()):
+        if self.runStatus():
             return self.__info_service().num
         else:
-            rospy.loginfo("Wait, connecting to flight controller")
-            return ""
+            rospy.logwarn("Wait, connecting to flight controller")
 
     def time(self):
-        if(self.runStatus()):
-            return self.__tm_service().time
+        if self.runStatus():
+            return self.__time_service().time
         else:
-            rospy.loginfo("Wait, connecting to flight controller")
-            return self.error_number
+            rospy.logwarn("Wait, connecting to flight controller")
 
-    def deltaTime(self):
-        if(self.runStatus()):
-            return self.__dltm_service().time
+    def uptime(self):
+        if self.runStatus():
+            return self.__uptime_service().time
         else:
-            rospy.loginfo("Wait, connecting to flight controller")
-            return self.error_number
+            rospy.logwarn("Wait, connecting to flight controller")
 
-    def launchTime(self):
-        if(self.runStatus()):
-            return self.__lntm_service().time
+    def flightTime(self):
+        if self.runStatus():
+            return self.__flight_time_service().time
         else:
-            rospy.loginfo("Wait, connecting to flight controller")
-            return self.error_number
+            rospy.logwarn("Wait, connecting to flight controller")
