@@ -12,10 +12,6 @@ class BoardManager():
     def __init__(self, namespace = ""):
         if namespace != "":
             namespace += "/"
-        rospy.wait_for_service(f"{namespace}geoscan/alive")
-        rospy.wait_for_service(f"{namespace}geoscan/board/restart")
-        rospy.wait_for_service(f"{namespace}geoscan/board/get_parameters")
-        rospy.wait_for_service(f"{namespace}geoscan/board/set_parameters")
 
         self.__alive = ServiceProxy(f"{namespace}geoscan/alive", Live)
         self.__restart = ServiceProxy(f"{namespace}geoscan/board/restart", Empty)
