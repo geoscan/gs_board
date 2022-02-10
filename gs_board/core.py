@@ -9,7 +9,6 @@ from std_msgs.msg import Bool
 from std_srvs.srv import Empty
 
 class BoardManager():
-
     def __init__(self):
         rospy.wait_for_service("geoscan/alive")
         rospy.wait_for_service("geoscan/board/restart")
@@ -22,10 +21,10 @@ class BoardManager():
 
         self.__alive = ServiceProxy("geoscan/alive",Live)
         self.__restart = ServiceProxy("geoscan/board/restart", Empty)
-        self.__time_service = ServiceProxy("geoscan/board/get_time",Time)
-        self.__uptime_service = ServiceProxy("geoscan/board/get_uptime",Time)
-        self.__flight_time_service = ServiceProxy("geoscan/board/get_flight_time",Time)
-        self.__info_service = ServiceProxy("geoscan/board/get_info",Info)
+        self.__time_service = ServiceProxy("geoscan/board/get_time", Time)
+        self.__uptime_service = ServiceProxy("geoscan/board/get_uptime", Time)
+        self.__flight_time_service = ServiceProxy("geoscan/board/get_flight_time", Time)
+        self.__info_service = ServiceProxy("geoscan/board/get_info", Info)
         self.__get_parameters_service = ServiceProxy("geoscan/board/get_parameters", ParametersList)
         self.__set_parameters_service = ServiceProxy("geoscan/board/set_parameters", SetParametersList)
     
