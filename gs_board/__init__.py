@@ -1,1 +1,1 @@
-from .core import BoardManager
+from .gs_board import BoardManager
